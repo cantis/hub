@@ -18,6 +18,7 @@ services:
       - mechbay-data:/data
     networks:
       - hub
+    profiles: ['home']
 
   waypoint:
     build: ./waypoint
@@ -30,6 +31,7 @@ services:
       - waypoint-data:/data
     networks:
       - hub
+    profiles: ['work', 'home']
 
   timetracker:
     build: ./timetracker
@@ -42,6 +44,7 @@ services:
       - timetracker-instance:/app/instance
     networks:
       - hub
+    profiles: ['work', 'home']
 
 networks:
   hub:
