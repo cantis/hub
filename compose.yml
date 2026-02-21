@@ -1,0 +1,38 @@
+services:
+  proxy:
+    image: caddy:2
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - hub
+
+  # mechbay:
+  #   build: ./mechbay
+  #   expose:
+  #     - "5000"
+  #   networks:
+  #     - hub
+
+  waypoint:
+    build: ./waypoint
+    expose:
+      - "5000"
+    environment:
+      - APPLICATION_ROOT=/waypoint
+    networks:
+      - hub
+
+  timetracker:
+    build: ./timetracker
+    expose:
+      - "5000"
+    environment:
+      - APPLICATION_ROOT=/timetracker
+    networks:
+      - hub
+
+networks:
+  hub:
+    driver: bridge

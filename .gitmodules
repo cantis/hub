@@ -1,0 +1,9 @@
+[submodule "waypoint"]
+	path = waypoint
+	url = https://github.com/cantis/waypoint.git
+[submodule "TimeTracker"]
+	path = TimeTracker
+	url = https://github.com/cantis/TimeTracker.git
+[submodule "MechBay"]
+	path = MechBay
+	url = https://github.com/cantis/MechBay.git

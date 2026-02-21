@@ -1,0 +1,32 @@
+:80 {
+  log {
+    output stdout
+    format console
+  }
+
+  @waypoint_noslash path /waypoint
+  redir @waypoint_noslash /waypoint/ 308
+
+  handle /waypoint/* {
+    uri strip_prefix /waypoint
+    reverse_proxy waypoint:5000 {
+      header_up X-Script-Name /waypoint
+      header_up X-Forwarded-Prefix /waypoint
+    }
+  }
+
+  @timetracker_noslash path /timetracker
+  redir @timetracker_noslash /timetracker/ 308
+
+  handle /timetracker/* {
+    uri strip_prefix /timetracker
+    reverse_proxy timetracker:5000 {
+      header_up X-Script-Name /timetracker
+      header_up X-Forwarded-Prefix /timetracker
+    }
+  }
+
+  handle / {
+    respond "Hub is running. Try /waypoint, /timetracker" 200
+    }
+}
