@@ -8,12 +8,16 @@ services:
     networks:
       - hub
 
-  # mechbay:
-  #   build: ./mechbay
-  #   expose:
-  #     - "5000"
-  #   networks:
-  #     - hub
+  mechbay:
+    build: ./MechBay
+    expose:
+      - "5000"
+    environment:
+      - APPLICATION_ROOT=/mechbay
+    volumes:
+      - mechbay-data:/data
+    networks:
+      - hub
 
   waypoint:
     build: ./waypoint
@@ -21,6 +25,9 @@ services:
       - "5000"
     environment:
       - APPLICATION_ROOT=/waypoint
+      - DATABASE_URL=sqlite:////data/app.db
+    volumes:
+      - waypoint-data:/data
     networks:
       - hub
 
@@ -30,9 +37,18 @@ services:
       - "5000"
     environment:
       - APPLICATION_ROOT=/timetracker
+    volumes:
+      - timetracker-data:/app/data
+      - timetracker-instance:/app/instance
     networks:
       - hub
 
 networks:
   hub:
     driver: bridge
+
+volumes:
+  mechbay-data:
+  waypoint-data:
+  timetracker-data:
+  timetracker-instance:

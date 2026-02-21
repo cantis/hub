@@ -4,11 +4,11 @@ My first attempt at a containerized application hub using Caddy as a reverse pro
 ## Architecture
 
 - **Caddy**: Reverse proxy server handling HTTP routing and path-based redirection
+- **MechBay**: BattleTech miniature inventory manager accessible at `/mechbay`
 - **TimeTracker**: Time tracking application accessible at `/timetracker`
 - **Waypoint**: Contact management application accessible at `/waypoint`
-- **MechBay**: (Planned) Mech customization app accessible at `/mechbay` (currently disabled)
 
-All services run in isolated Docker containers connected via a shared bridge network.
+All services run in isolated Docker containers connected via a shared bridge network. Data is persisted using named Docker volumes, so it survives container restarts and rebuilds.
 
 ## Prerequisites
 
@@ -36,16 +36,18 @@ This command:
 
 This command:
 - Stops all running containers
-- Removes containers and volumes
+- Removes containers
+- **Preserves data volumes** for persistence across restarts
 
 ## Accessing Applications
 
 Once the hub is running, access applications at:
 
 - **Hub Landing**: http://localhost/
+- **MechBay**: http://localhost/mechbay/
 - **TimeTracker**: http://localhost/timetracker/
 - **Waypoint**: http://localhost/waypoint/
-- **MechBay**: http://localhost/mechbay/ (currently disabled)
+
 Each application handles authentication independently. Default admin credentials are configured within each application's documentation.
 
 ## Configuration
@@ -60,9 +62,13 @@ The `Caddyfile` defines routing rules:
 ### Docker Compose
 
 The `compose.yml` file defines:
-- Service configurations for proxy, timetracker, and waypoint
+- Service configurations for proxy, mechbay, timetracker, and waypoint
 - Network topology (bridge network named `hub`)
 - Environment variables for application root paths
+- Named volumes for data persistence:
+  - `mechbay-data`: MechBay database
+  - `waypoint-data`: Waypoint database
+  - `timetracker-data` & `timetracker-instance`: TimeTracker database and instance files
 
 ### Application Configuration
 
@@ -80,7 +86,7 @@ docker compose logs
 
 ### Application shows blank page
 - Verify containers are running: `docker compose ps`
-- Check application logs: `docker compose logs [waypoint|timetracker]`
+- Check application logs: `docker compose logs [mechbay|waypoint|timetracker]`
 - Ensure applications finished initialization (migrations, seeding)
 
 ### Port 80 already in use
@@ -107,7 +113,7 @@ proxy:
 docker compose logs -f
 
 # Specific service
-docker compose logs -f [proxy|timetracker|waypoint]
+docker compose logs -f [proxy|mechbay|timetracker|waypoint]
 ```
 
 ### Executing Commands in Containers
@@ -116,6 +122,7 @@ docker compose logs -f [proxy|timetracker|waypoint]
 docker compose exec [service-name] [command]
 
 # Examples
+docker compose exec mechbay uv run python
 docker compose exec waypoint uv run flask shell
 docker compose exec timetracker sh
 ```

@@ -4,6 +4,17 @@
     format console
   }
 
+  @mechbay_noslash path /mechbay
+  redir @mechbay_noslash /mechbay/ 308
+
+  handle /mechbay/* {
+    uri strip_prefix /mechbay
+    reverse_proxy mechbay:5000 {
+      header_up X-Script-Name /mechbay
+      header_up X-Forwarded-Prefix /mechbay
+    }
+  }
+
   @waypoint_noslash path /waypoint
   redir @waypoint_noslash /waypoint/ 308
 
@@ -27,6 +38,6 @@
   }
 
   handle / {
-    respond "Hub is running. Try /waypoint, /timetracker" 200
+    respond "Hub is running. Try /mechbay, /waypoint, /timetracker" 200
     }
 }
