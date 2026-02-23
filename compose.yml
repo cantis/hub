@@ -26,7 +26,9 @@ services:
       - "5000"
     environment:
       - APPLICATION_ROOT=/waypoint
-      - DATABASE_URL=sqlite:////data/app.db
+      - DATABASE_URL=sqlite:////data/waypoint.db
+      - FLASK_SECRET_KEY=waypoint-secret-key-hub-2026
+      - BACKUP_PATH=/data/backups
     volumes:
       - waypoint-data:/data
     networks:
