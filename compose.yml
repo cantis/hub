@@ -47,7 +47,6 @@ services:
       - DAY_END_TIME=17:00
     volumes:
       - timetracker-data:/app/data
-      - timetracker-instance:/app/instance
     networks:
       - hub
     profiles: ['work', 'home']
