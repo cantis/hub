@@ -99,6 +99,8 @@ proxy:
 
 ## Development
 
+For developer workflows — adding new sub-applications, rebuilding individual containers, managing volumes, and other day-to-day tasks — see [docs/dev-docs.md](docs/dev-docs.md).
+
 ### Rebuilding After Changes
 
 ```powershell
