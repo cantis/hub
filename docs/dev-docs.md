@@ -14,6 +14,7 @@ This document covers developer workflows not included in the general README: add
 - [Rebuilding After Code Changes](#rebuilding-after-code-changes)
 - [Logs and Debugging](#logs-and-debugging)
 - [Network Details](#network-details)
+- [Safe Force Shutdown](#safe-force-shutdown)
 
 ---
 
@@ -270,6 +271,35 @@ docker compose exec waypoint sh
 ```powershell
 docker compose exec waypoint env
 ```
+
+---
+
+## Safe Force Shutdown
+
+`down.ps1` now supports an optional `-Force` switch that is still non-destructive to data volumes.
+
+### Standard shutdown (default)
+
+```powershell
+./down.ps1
+```
+
+This runs `docker compose down --remove-orphans` and preserves named volumes.
+
+### Force shutdown (container-focused)
+
+```powershell
+./down.ps1 -Force
+```
+
+This additionally runs:
+
+- `docker compose kill`
+- `docker compose rm -f -s`
+
+Then it runs `docker compose down --remove-orphans`.
+
+No volume-deletion flags are used, so persistent data remains intact.
 
 ---
 
