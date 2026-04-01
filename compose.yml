@@ -10,6 +10,7 @@ services:
 
   mechbay:
     build: ./MechBay
+    image: hub-mechbay:${MECHBAY_VERSION:-latest}
     expose:
       - "5000"
     environment:
@@ -18,10 +19,11 @@ services:
       - mechbay-data:/data
     networks:
       - hub
-    profiles: ['home']
+    profiles: ["home"]
 
   waypoint:
     build: ./waypoint
+    image: hub-waypoint:${WAYPOINT_VERSION:-latest}
     expose:
       - "5000"
     environment:
@@ -33,10 +35,11 @@ services:
       - waypoint-data:/data
     networks:
       - hub
-    profiles: ['work', 'home']
+    profiles: ["work", "home"]
 
   timetracker:
     build: ./timetracker
+    image: hub-timetracker:${TIMETRACKER_VERSION:-latest}
     expose:
       - "5000"
     environment:
@@ -49,7 +52,7 @@ services:
       - timetracker-data:/app/data
     networks:
       - hub
-    profiles: ['work', 'home']
+    profiles: ["work", "home"]
 
 networks:
   hub:
