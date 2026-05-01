@@ -19,7 +19,7 @@ services:
       - mechbay-data:/data
     networks:
       - hub
-    profiles: ["home"]
+    profiles: [ "home" ]
 
   waypoint:
     build: ./waypoint
@@ -35,7 +35,7 @@ services:
       - waypoint-data:/data
     networks:
       - hub
-    profiles: ["work", "home"]
+    profiles: [ "work", "home" ]
 
   timetracker:
     build: ./timetracker
@@ -52,7 +52,7 @@ services:
       - timetracker-data:/app/data
     networks:
       - hub
-    profiles: ["work", "home"]
+    profiles: [ "work", "home" ]
 
 networks:
   hub:
